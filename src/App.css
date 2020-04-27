@@ -13,6 +13,7 @@ h6,
 p,
 label,
 input,
+textarea,
 button {
   font-family: "Cagliostro", sans-serif !important;
 }
@@ -20,4 +21,12 @@ button {
 .alert {
   font-family: "Cagliostro", sans-serif !important;
   transition: background-color 3s ease-in, opacity 2s ease-out;
+}
+
+.footer {
+  overflow-x: hidden;
+}
+
+.footer_margin {
+  margin-top: 20px;
 }

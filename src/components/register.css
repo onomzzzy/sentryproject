@@ -16,3 +16,20 @@
     top: -0.8em;
   }
 }
+
+@keyframes ui-progress-spinner-color {
+  100%,
+  0% {
+    stroke: #605196;
+  }
+  40% {
+    stroke: #0057e7;
+  }
+  66% {
+    stroke: #563e7c;
+  }
+  80%,
+  90% {
+    stroke: #ffa700;
+  }
+}

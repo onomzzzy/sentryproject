@@ -1,301 +1,427 @@
-import React, { useState, useEffect } from "react";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
+import React, { useEffect, useReducer } from "react";
+import axios from "axios";
 import "../components/login.css";
+import usericon from "../icons/user.png"; // Tell webpack this JS file uses this image
+import groupicon from "../icons/group.png"; // Tell webpack this JS file uses this image
+import lefticon from "../icons/left-arrow.png"; // Tell webpack this JS file uses this image
+import leftIcon from "../icons/left-arrow1.png"; // Tell webpack this JS file uses this image
+import nexticon from "../icons/next.png"; // Tell webpack this JS file uses this image
 import "../components/register.css";
 import Messages from "../components/messages";
-import { InputTextarea } from "primereact/inputtextarea";
+import { ProgressSpinner } from "primereact/progressspinner";
+
+const uri = "http://localhost:8080/store/users";
+const url = "http://localhost:4000/api/salt";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "REG_CONTENT":
+      state = {
+        ...state,
+        [action.name]: action.value.content,
+      };
+      return state;
+    case "REG_ORIGIN":
+      state = {
+        ...state,
+        step: 0,
+      };
+      return state;
+    case "REG_CREDENTIALS":
+      state = {
+        ...state,
+        step: 1,
+      };
+      return state;
+    case "REG_PERSONAL_LOG_1":
+      state = {
+        ...state,
+        step: 2,
+      };
+      return state;
+    case "REG_PERSONAL_LOG_2":
+      state = {
+        ...state,
+        loading: true,
+      };
+      return state;
+    case "REG_MSG":
+      state = {
+        ...state,
+        message: action.message,
+        msgCode: action.msgCode,
+      };
+      return state;
+    case "REG_SUCCESS_FAILURE":
+      state = {
+        ...state,
+        message: action.message,
+        msgCode: action.msgCode,
+        loading: false,
+      };
+      return state;
+    default:
+      return state;
+  }
+};
 
 function Registrationform() {
-  const [step, setStep] = useState(0);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstname, setFirstName] = useState("");
-  const [lastname, setLastName] = useState("");
-  const [address, setAddress] = useState("");
-  const [phonenumber, setPhoneNumber] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [message, setMessage] = useState("");
-  const [msgCode, setMsgCode] = useState(0);
-  const [callApi, setCallApi] = useState(0);
-  const [confirmpassword, setConfirmPassword] = useState("");
+  const saltPassword = async (usr) => {
+    axios
+      .put(url, usr)
+      .then((res) => {
+        let pwd = JSON.stringify(res.data);
+        let user = {
+          ...usr,
+          password: pwd,
+        };
+        reg(user);
+      })
+      .catch((err) => {
+        dispatch({
+          type: "REG_SUCCESS_FAILURE",
+          message: "Registration Successful",
+          msgCode: 1,
+        });
+      });
+  };
 
-  useEffect(() => {
-    setStep(step);
-  }, [step]);
+  const reg = async (usr) => {
+    axios
+      .put(uri, usr)
+      .then((res) => {
+        if (res.data) {
+          dispatch({
+            type: "REG_SUCCESS_FAILURE",
+            message: "Registration Successful",
+            msgCode: 1,
+          });
+        } else {
+          dispatch({
+            type: "REG_SUCCESS_FAILURE",
+            message: `Registration Failed. ${usr.username} is already a user`,
+            msgCode: 4,
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch({
+          type: "REG_SUCCESS_FAILURE",
+          message: "Something went wrong. Please check your connection",
+          msgCode: 3,
+        });
+      });
+  };
 
-  useEffect(() => {
-    registerUser();
-  }, [callApi]);
+  const initialState = {
+    step: 0,
+    username: "",
+    password: "",
+    firstname: "",
+    lastname: "",
+    phonenumber: "",
+    whatsapp: "",
+    address: "",
+    message: "",
+    msgCode: 0,
+    loading: false,
+    confirmpassword: "",
+  };
 
   const registerUser = async () => {
     const user = {
       id: "",
-      username: username,
-      password: password,
+      username: state.username,
+      password: state.password,
       role: "USER",
       log: {
-        firstname: firstname,
-        lastname: lastname,
+        firstname: state.firstname,
+        lastname: state.lastname,
         avatar: null,
-        address: address,
-        phonenumber: phonenumber,
-        whatsapp: whatsapp,
+        address: state.address,
+        phonenumber: state.phonenumber,
+        whatsapp: state.whatsapp,
       },
     };
 
-    const requestHeaders = {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    };
-
-    /*Fetch https://onomecode-security.herokuapp.com/store/records/onomzzzy@gmail.com
-     */
-    if (callApi === 1) {
-      const response = await fetch("/store/users", requestHeaders, {
-        mode: "no-cors",
-      })
-        .then((res) => res.json())
-        .then(
-          (data) => {
-            console.log("result " + data);
-            setCallApi(0);
-          },
-          (error) => {
-            console.log("error occured now");
-          }
-        );
-      //const data = await response.json();
-      /* const data = await response.json().then(
-        (data) => {
-          console.log("result " + data);
-          setCallApi(0);
-        },
-        (error) => {
-          console.log("error occured now");
-        }
-      );*/
-    }
+    //Salt Password
+    await saltPassword(user);
   };
 
-  function handleUsernameChange(e) {
-    setUsername(e.target.value);
+  function handleUsernameValidation(name) {
+    let validUserName = name.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+    if (validUserName) {
+      return true;
+    }
+    return false;
   }
 
-  function handlePasswordChange(e) {
-    setPassword(e.target.value);
+  function callMsg(msg, msc) {
+    dispatch({ type: "REG_MSG", message: msg, msgCode: msc });
   }
 
-  function handleConfirmPasswordChange(e) {
-    setConfirmPassword(e.target.value);
-  }
-
-  function handleFirstNameChange(e) {
-    setFirstName(e.target.value);
-  }
-
-  function handleLastNameChange(e) {
-    setLastName(e.target.value);
-  }
-
-  function handlePhoneNumberChange(e) {
-    setPhoneNumber(e.target.value);
-  }
-
-  function handleWhatsappChange(e) {
-    setWhatsapp(e.target.value);
-  }
-
-  function handleAddressChange(e) {
-    setAddress(e.target.value);
-  }
-
-  function handleUserValidation(e) {
-    let validEmail = e.target.value.match(
-      /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i
-    );
-    if (!validEmail) {
-      setMsgCode(4);
-      setMessage("Username must be a valid email");
-    } else {
-      setMsgCode(0);
-      setMessage("");
+  function handleValidation(e) {
+    dispatch({
+      type: "REG_CONTENT",
+      name: e.target.id,
+      value: {
+        content: e.target.value,
+      },
+    });
+    switch (e.target.id) {
+      case "username":
+        {
+          let valid = handleUsernameValidation(e.target.value);
+          if (!valid) {
+            callMsg("Invalid Username", 4);
+          } else {
+            callMsg("", 0);
+          }
+        }
+        break;
+      case "password":
+        {
+          let valid = handlePasswordValidation(e.target.value);
+          if (!valid) {
+            callMsg("Password must be more than 5 character", 3);
+          } else {
+            callMsg("", 0);
+          }
+        }
+        break;
+      case "confirmpassword":
+        {
+          let valid = handlePasswordConfirmationValidation(
+            state.password,
+            e.target.value
+          );
+          if (!valid) {
+            callMsg("Password does not match", 3);
+          } else {
+            callMsg("", 0);
+          }
+        }
+        break;
+      case "firstname":
+        {
+          let valid = handleNameValidation(e.target.value);
+          if (!valid) {
+            callMsg("Enter a valid first name", 3);
+          } else {
+            callMsg("", 0);
+          }
+        }
+        break;
+      case "lastname":
+        {
+          let valid = handleNameValidation(e.target.value);
+          if (!valid) {
+            callMsg("Enter a valid last name", 4);
+          } else {
+            callMsg("", 0);
+          }
+        }
+        break;
+      case "phonenumber":
+        {
+          let valid = handlePhoneNumberValidation(e.target.value);
+          if (!valid) {
+            callMsg("Phone number not valid", 4);
+          } else {
+            callMsg("", 0);
+          }
+        }
+        break;
+      case "whatsapp":
+        {
+          let valid = handlePhoneNumberValidation(e.target.value);
+          if (!valid) {
+            callMsg("Whatsapp number not valid", 3);
+          } else {
+            callMsg("", 0);
+          }
+        }
+        break;
+      default: {
+        let valid = handleAddressValidation(e.target.value);
+        if (!valid) {
+          callMsg("Enter a valid address", 4);
+        } else {
+          callMsg("", 0);
+        }
+      }
     }
   }
 
-  function handleFirstNameValidation(e) {
-    let validName = e.target.value.match(/^[a-zA-Z\s]{3,}$/);
-    if (!validName) {
-      setMsgCode(3);
-      setMessage("Enter a Valid First Name");
+  function handleNameValidation(name) {
+    let validName = name.match(/^[a-zA-Z\s]{3,}$/);
+    if (validName) {
+      return true;
+    }
+    return false;
+  }
+
+  function handlePasswordValidation(password) {
+    if (password.length > 5) {
+      return true;
+    }
+    return false;
+  }
+
+  function handlePasswordConfirmationValidation(password, confirmpassword) {
+    if (password === confirmpassword) {
+      return true;
+    }
+    return false;
+  }
+
+  function handlePhoneNumberValidation(phonenumber) {
+    let validNumber = phonenumber.match(/^\d{11}$/);
+    if (validNumber) {
+      return true;
+    }
+    return false;
+  }
+
+  function handleAddressValidation(address) {
+    let validAddress = address.match(/^[a-zA-Z0-9\s,.'-]{3,}$/);
+    if (validAddress) {
+      return true;
+    }
+    return false;
+  }
+
+  function goBack(e) {
+    console.log(`button clicked ${e.target.id}`);
+    console.log(`current state ${JSON.stringify(state)}`);
+    if (e.target.id === "10") {
+      dispatch({ type: "REG_ORIGIN" });
     } else {
-      setMsgCode(0);
-      setMessage("");
+      dispatch({ type: "REG_CREDENTIALS" });
     }
   }
 
-  function handleLastNameValidation(e) {
-    let validName = e.target.value.match(/^[a-zA-Z\s-]{3,}$/);
-    if (!validName) {
-      setMsgCode(3);
-      setMessage("Enter a Valid Last Name");
-    } else {
-      setMsgCode(0);
-      setMessage("");
-    }
-  }
-
-  function handlePasswordValidation(e) {
-    if (e.target.value.length < 7) {
-      setMsgCode(3);
-      setMessage("Password must be greater than 6 characters");
-    } else {
-      setMsgCode(0);
-      setMessage("");
-    }
-  }
-
-  function handleConfirmPasswordValidation(e) {
-    if (!(e.target.value === password)) {
-      setMsgCode(3);
-      setMessage("Password does't match ");
-    } else {
-      setMsgCode(0);
-      setMessage("");
-    }
-  }
-
-  function handlePhoneNumberValidation(e) {
-    let validNumber = e.target.value.match(/^\d{11}$/);
-    if (!validNumber) {
-      setMsgCode(3);
-      setMessage("Enter a valid phone number");
-    } else {
-      setMsgCode(0);
-      setMessage("");
-    }
-  }
-
-  function handleWhatsappValidation(e) {
-    let validNumber = e.target.value.match(/^\d{11}$/);
-    if (!validNumber) {
-      setMsgCode(3);
-      setMessage("Enter a valid whatsapp number");
-    } else {
-      setMsgCode(0);
-      setMessage("");
-    }
-  }
-
-  function handleAddressValidation(e) {
-    let validAddress = e.target.value.match(/^[a-zA-Z0-9\s,.'-]{3,}$/);
-    if (!validAddress) {
-      setMsgCode(3);
-      setMessage("Enter a valid address");
-    } else {
-      setMsgCode(0);
-      setMessage("");
-    }
-  }
-
-  function handleCredentialValidation(e) {
+  function handleFormValidation(e) {
     e.preventDefault();
-    if (msgCode === 0) {
-      setStep(1);
-    } else {
-      setMsgCode(4);
-      setMessage("Form has not been filled properly");
+    switch (e.target.id) {
+      case "0":
+        {
+          let crosscheck = false;
+          crosscheck = handleUsernameValidation(state.username);
+          crosscheck = handlePasswordValidation(state.password);
+          crosscheck = handlePasswordConfirmationValidation(
+            state.password,
+            state.confirmpassword
+          );
+          if (crosscheck) {
+            dispatch({ type: "REG_CREDENTIALS" });
+          } else {
+            dispatch({
+              type: "REG_MSG",
+              message: "Form not properly Filled",
+              msgCode: 4,
+            });
+          }
+        }
+        break;
+      case "1":
+        {
+          let crosscheck = false;
+          crosscheck = handleNameValidation(state.firstname);
+          crosscheck = handleNameValidation(state.lastname);
+          crosscheck = handlePhoneNumberValidation(state.phonenumber);
+          if (crosscheck) {
+            dispatch({ type: "REG_PERSONAL_LOG_1" });
+          } else {
+            dispatch({
+              type: "REG_MSG",
+              message: "Form not properly Filled",
+              msgCode: 4,
+            });
+          }
+        }
+        break;
+      case "2":
+        {
+          let crosscheck = false;
+          crosscheck = handlePhoneNumberValidation(state.whatsapp);
+          crosscheck = handleAddressValidation(state.address);
+          if (crosscheck) {
+            dispatch({ type: "REG_PERSONAL_LOG_2" });
+            registerUser();
+          } else {
+            dispatch({
+              type: "REG_MSG",
+              message: "Form not properly Filled",
+              msgCode: 4,
+            });
+          }
+        }
+        break;
+      default:
+        dispatch({ type: "REG_ORIGIN" });
     }
   }
 
-  function handleBack(e) {
-    e.preventDefault();
-    setStep(1);
-  }
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  function handleBackF(e) {
-    e.preventDefault();
-    setStep(0);
-  }
-
-  function handleNext(e) {
-    e.preventDefault();
-    if (msgCode === 0) {
-      setStep(2);
-    } else {
-      setMsgCode(3);
-      setMessage("Form has not been filled properly");
-    }
-  }
-
-  function handleRegister(e) {
-    e.preventDefault();
-    if (msgCode === 0) {
-      setCallApi(1);
-    } else {
-      setMsgCode(3);
-      setMessage("Form has not been filled properly");
-    }
-  }
-
-  switch (step) {
+  switch (state.step) {
     case 0:
       return (
         <div className="form_animate">
           <div>
             <h1>Credentials</h1>
           </div>
-          <Messages message={message} msgCode={msgCode}></Messages>
+          <Messages message={state.message} msgCode={state.msgCode}></Messages>
           <div className="ui-g">
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputText
-                  id="usr"
-                  value={username}
-                  onBlur={handleUserValidation}
-                  onChange={handleUsernameChange}
+              <div className="input-field">
+                <input
+                  type="text"
+                  id="username"
+                  value={state.username}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="usr">Username</label>
-              </span>
+                <label htmlFor="username">Username</label>
+              </div>
             </div>
 
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputText
-                  id="pwd"
-                  value={password}
+              <div className="input-field">
+                <input
                   type="password"
-                  onBlur={handlePasswordValidation}
-                  onChange={handlePasswordChange}
+                  id="password"
+                  value={state.password}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="pwd">Password</label>
-              </span>
+                <label htmlFor="password">Password</label>
+              </div>
             </div>
 
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputText
-                  id="cpwd"
-                  value={confirmpassword}
+              <div className="input-field">
+                <input
                   type="password"
-                  onBlur={handleConfirmPasswordValidation}
-                  onChange={handleConfirmPasswordChange}
+                  id="confirmpassword"
+                  value={state.confirmpassword}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="cpwd">Confirm Password</label>
-              </span>
+                <label htmlFor="confirmpassword">Confirm Password</label>
+              </div>
             </div>
 
             <div className="ui-g-12">
-              <Button
-                onClick={handleCredentialValidation}
-                label="Personal Info"
-                icon="pi pi-user"
-                iconPos="right"
-              />
+              <button
+                type="button"
+                id="0"
+                onClick={handleFormValidation}
+                className="btn btn-sm"
+              >
+                Personal Log <img src={usericon}></img>
+              </button>
             </div>
           </div>
         </div>
@@ -304,65 +430,71 @@ function Registrationform() {
       return (
         <div className="form_animate">
           <div>
-            <h1>Personal Info</h1>
+            <h1>Personal Log</h1>
           </div>
-          <Messages message={message} msgCode={msgCode}></Messages>
+          <Messages message={state.message} msgCode={state.msgCode}></Messages>
           <div className="ui-g">
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputText
-                  id="fn"
-                  value={firstname}
-                  onBlur={handleFirstNameValidation}
-                  onChange={handleFirstNameChange}
+              <div className="input-field">
+                <input
+                  type="text"
+                  id="firstname"
+                  value={state.firstname}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="fn">First Name</label>
-              </span>
+                <label htmlFor="firstname">First Name</label>
+              </div>
             </div>
 
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputText
-                  id="ln"
-                  value={lastname}
-                  onBlur={handleLastNameValidation}
-                  onChange={handleLastNameChange}
+              <div className="input-field">
+                <input
+                  type="text"
+                  id="lastname"
+                  value={state.lastname}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="ln">Last Name</label>
-              </span>
+                <label htmlFor="lastname">Last Name</label>
+              </div>
             </div>
 
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputText
-                  id="pn"
-                  value={phonenumber}
-                  onBlur={handlePhoneNumberValidation}
-                  onChange={handlePhoneNumberChange}
+              <div className="input-field">
+                <input
+                  type="text"
+                  id="phonenumber"
+                  value={state.phonenumber}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="pn">Phone Number</label>
-              </span>
+                <label htmlFor="phonenumber">Phone Number</label>
+              </div>
             </div>
 
             <div className="container-fluid">
               <div className="row">
                 <div className="col-6">
-                  <Button
-                    onClick={handleBackF}
-                    label="Back"
-                    icon="pi pi-lock-open"
-                    iconPos="left"
-                  />
+                  <button
+                    type="button"
+                    id="10"
+                    onClick={goBack}
+                    className="btn btn-sm"
+                  >
+                    <img className="left_icon" src={lefticon}></img>Back
+                  </button>
                 </div>
 
                 <div className="col-6">
-                  <Button
-                    onClick={handleNext}
-                    label="Next"
-                    icon="pi 
-                    pi-user"
-                    iconPos="right"
-                  />
+                  <button
+                    type="button"
+                    id="1"
+                    onClick={handleFormValidation}
+                    className="btn btn-sm"
+                  >
+                    Next <img src={nexticon}></img>
+                  </button>
                 </div>
               </div>
             </div>
@@ -373,54 +505,70 @@ function Registrationform() {
       return (
         <div className="form_animate">
           <div>
-            <h1>Personal Info</h1>
+            <h1>Personal Log</h1>
           </div>
-          <Messages message={message} msgCode={msgCode}></Messages>
+          <Messages message={state.message} msgCode={state.msgCode}></Messages>
+          <div>
+            {state.loading ? (
+              <ProgressSpinner
+                style={{ width: "30px", height: "30px", float: "right" }}
+                strokeWidth="5"
+                fill="transparent"
+                animationDuration=".5s"
+              />
+            ) : (
+              <div></div>
+            )}
+          </div>
           <div className="ui-g">
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputText
-                  id="wap"
-                  value={whatsapp}
-                  onBlur={handleWhatsappValidation}
-                  onChange={handleWhatsappChange}
+              <div className="input-field">
+                <input
+                  type="text"
+                  id="whatsapp"
+                  value={state.whatsapp}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="wap">Whatsapp</label>
-              </span>
+                <label htmlFor="whatsapp">Whatsapp Number</label>
+              </div>
             </div>
 
             <div className="ui-g-12">
-              <span className="p-float-label">
-                <InputTextarea
-                  rows={5}
-                  cols={30}
-                  id="ads"
-                  value={address}
-                  onBlur={handleAddressValidation}
-                  onChange={handleAddressChange}
+              <div className="input-field">
+                <textarea
+                  type="text"
+                  id="address"
+                  value={state.address}
+                  onChange={handleValidation}
+                  required
                 />
-                <label htmlFor="ads">Address</label>
-              </span>
+                <label htmlFor="address">Address</label>
+              </div>
             </div>
 
             <div className="container-fluid">
               <div className="row">
                 <div className="col-6">
-                  <Button
-                    onClick={handleBack}
-                    label="Back"
-                    icon="pi pi-lock-open"
-                    iconPos="left"
-                  />
+                  <button
+                    type="button"
+                    id="20"
+                    onClick={goBack}
+                    className="btn btn-sm"
+                  >
+                    <img className="left_icon" src={leftIcon}></img> Back
+                  </button>
                 </div>
 
                 <div className="col-6">
-                  <Button
-                    onClick={handleRegister}
-                    label="Register"
-                    icon="pi pi-user-plus"
-                    iconPos="right"
-                  />
+                  <button
+                    type="button"
+                    id="2"
+                    onClick={handleFormValidation}
+                    className="btn btn-sm"
+                  >
+                    Register <img src={groupicon}></img>
+                  </button>
                 </div>
               </div>
             </div>

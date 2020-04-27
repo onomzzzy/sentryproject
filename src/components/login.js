@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
 import logo from "../icons/logo.png"; // Tell webpack this JS file uses this image
+import lockicon from "../icons/unlock.png"; // Tell webpack this JS file uses this image
 import "../components/login.css";
 import { Link } from "react-router-dom";
 import Messages from "../components/messages";
+import auth from "../components/auth";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -58,28 +58,29 @@ function Login() {
             <Messages message={message} msgCode={msgCode}></Messages>
             <div className="ui-g">
               <div className="ui-g-12">
-                <span className="p-float-label">
-                  <InputText
-                    id="usr"
-                    value={username}
+                <div className="input-field">
+                  <input
+                    type="text"
+                    id="username"
                     onBlur={handleUserValidation}
                     onChange={handleUsernameChange}
+                    required
                   />
-                  <label htmlFor="usr">Username</label>
-                </span>
+                  <label htmlFor="username">Username</label>
+                </div>
               </div>
 
               <div className="ui-g-12">
-                <span className="p-float-label">
-                  <InputText
-                    id="pwd"
-                    value={password}
-                    type="password"
+                <div className="input-field">
+                  <input
+                    type="text"
+                    id="password"
                     onBlur={handlePasswordValidation}
                     onChange={handlePasswordChange}
+                    required
                   />
-                  <label htmlFor="pwd">Password</label>
-                </span>
+                  <label htmlFor="password">Password</label>
+                </div>
               </div>
 
               <div className="ui-g-12">
@@ -107,7 +108,9 @@ function Login() {
                 </div>
               </div>
               <div className="ui-g-12">
-                <Button label="Login" icon="pi pi-unlock" iconPos="right" />
+                <button type="button" className="btn btn-sm">
+                  Login <img src={lockicon}></img>
+                </button>
               </div>
               <div className="ui-g-12">
                 <span className="account_d">
@@ -125,10 +128,5 @@ function Login() {
     </div>
   );
 }
-
-const credentials = {
-  username: "",
-  password: "",
-};
 
 export default Login;

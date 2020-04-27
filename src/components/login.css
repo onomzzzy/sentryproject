@@ -4,6 +4,28 @@
   }
 }
 
+/*,#605196,#563e7c*/
+
+.btn {
+  background-color: #605196 !important;
+  font-family: "Cagliostro", sans-serif;
+  color: #fff !important;
+}
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.btn img {
+  float: right;
+  width: 14.5px;
+  margin-top: 3px;
+}
+
+.btn .left_icon {
+  float: left !important;
+}
+
 /* Check box*/
 /* Customize the label (the container) */
 .container {
@@ -49,7 +71,7 @@
 
 /* When the checkbox is checked, add a blue background */
 .container input:checked ~ .checkmark {
-  background-color: #3192e1;
+  background-color: #563e7c;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -93,10 +115,10 @@
   font-family: "Cagliostro", sans-serif !important;
 }
 
-input,
 textarea,
 button {
   width: 100%;
+  font-family: "Cagliostro", sans-serif !important;
 }
 
 .password-reset a {
@@ -137,7 +159,7 @@ button {
     0 6px 10px 0 rgba(0, 0, 0, 0.14);
 }
 .login-body .login-panel .login-panel-header {
-  background-color: #3192e1;
+  background-color: #605196;
   text-align: center;
   padding: 4px 10px;
 }
@@ -181,6 +203,64 @@ button {
   position: relative;
   top: -3px;
   right: 3px;
+}
+
+.input-field {
+  position: relative;
+  text-align: left;
+  /*width: 250px;
+  height: 44px;*/
+  line-height: 44px;
+}
+label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: #bbb;
+  transition: 0.2s all;
+  cursor: text;
+}
+input,
+textarea {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  /* padding: 0.5rem 0;*/
+  border-bottom: 2px solid #d3d3d3;
+  box-shadow: none;
+  color: #111;
+}
+input:invalid {
+  outline: 0;
+  /* color: #ff2300;*/
+  /*border-color: #ff2300;*/
+}
+input:focus,
+input:valid {
+  border-color: #605196;
+}
+input:focus ~ label,
+input:valid ~ label {
+  font-size: 15px;
+  top: -24px;
+  color: #605196;
+}
+
+textarea:invalid {
+  outline: 0;
+  /* color: #ff2300;*/
+  /*border-color: #ff2300;*/
+}
+textarea:focus,
+textarea:valid {
+  border-color: #605196;
+}
+textarea:focus ~ label,
+textarea:valid ~ label {
+  font-size: 15px;
+  top: -24px;
+  color: #605196;
 }
 
 @media (max-width: 640px) {
