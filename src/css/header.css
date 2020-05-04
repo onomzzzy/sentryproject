@@ -1,0 +1,19 @@
+.header {
+}
+
+.header .card {
+  height: 90px;
+}
+
+.header .card .header-icon {
+  margin-top: 1em;
+}
+
+.header .card .header-icon img {
+  width: 200px;
+}
+
+.header .card .float-right {
+  float: right;
+  margin-top: 2em;
+}

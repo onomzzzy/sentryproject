@@ -1,0 +1,19 @@
+.header-link .header-link-name {
+  border-bottom: 2px solid #61b4f5;
+  cursor: pointer;
+}
+
+.header-link h6 {
+  text-align: center;
+  font-size: 12.5px;
+}
+
+.header-link .header-link-name-hover:hover {
+  cursor: pointer;
+  border-bottom: 2px solid #61b4f5;
+}
+
+.header-link .colored-link h6 {
+  color: #0f75bd;
+  font-weight: 600;
+}

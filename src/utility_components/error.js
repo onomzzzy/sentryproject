@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../icons/404.svg"; // Tell webpack this JS file uses this image
-import "../components/error.css";
+import "../css/error.css";
 const ErrorPage = () => {
   return (
     <div className="page">

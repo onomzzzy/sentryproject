@@ -22,13 +22,13 @@
    background-image: url("/serenity/javax.faces.resource/images/exception/notfound-bg.jpg.xhtml?ln=serenity-layout");
 }*/
 .exception-body.notfound .exception-panel .exception-code {
-  background-color: #605196;
+  background-color: #61b4f5;
 }
 .exception-body.notfound .exception-panel .exception-code img {
   margin-left: -206px;
 }
 .exception-body.notfound .exception-panel .exception-icon {
-  background-color: #605196;
+  background-color: #61b4f5;
 }
 .exception-body .exception-panel {
   width: 550px;

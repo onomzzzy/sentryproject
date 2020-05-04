@@ -1,0 +1,27 @@
+.home-carousel {
+}
+
+.carousel-background {
+  background: url("../icons/pbanner.jpg") no-repeat;
+  height: 350px;
+  width: 100%;
+  background-size: cover;
+}
+
+.carousel-footer .card {
+  background-color: #353e4e;
+  height: 120px;
+}
+
+.carousel-footer h5 {
+  color: #fff;
+}
+
+.carousel-text {
+  padding: 50px 200px;
+}
+
+.carousel-text h2,
+h6 {
+  color: #353e4e;
+}
