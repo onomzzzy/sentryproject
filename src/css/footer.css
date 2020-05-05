@@ -1,3 +1,50 @@
 .footer {
   margin-top: 1em;
 }
+.footer .card {
+  background-color: #353e4e;
+}
+
+.footer .copyright h6 {
+  color: #212121;
+  text-align: center;
+  margin-top: 0.5em;
+}
+
+.footer .stock-exchange h3 {
+  color: #fff;
+}
+.footer .push-stock {
+  margin-top: 1.5em;
+}
+.footer .stock-exchange img {
+  width: 170px;
+  border-radius: 50%;
+}
+
+.footer h5 {
+  font-weight: 600;
+}
+
+.footer .push {
+  margin-top: 2em;
+}
+
+.footer .social .row {
+  margin-bottom: 0.6em;
+}
+.footer .about h5,
+h6 {
+  color: #fff;
+}
+
+.footer .help h5,
+h6 {
+  color: #fff;
+}
+
+.footer .social h5,
+h6 {
+  color: #fff;
+  margin: 5px;
+}

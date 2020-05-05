@@ -1,6 +1,13 @@
 .header {
 }
 
+a {
+  text-decoration: none !important;
+}
+a:hover {
+  text-decoration: none !important;
+}
+
 .header .card {
   height: 90px;
 }
@@ -16,4 +23,24 @@
 .header .card .float-right {
   float: right;
   margin-top: 2em;
+}
+
+.hamburg {
+  margin-top: -1em;
+}
+
+.hamburger {
+  background-color: transparent;
+}
+
+.hamburger:focus,
+.hamburger:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.header .float-right .btn {
+  width: 130px;
+  border-radius: 15px;
+  margin-top: -0.8em;
 }

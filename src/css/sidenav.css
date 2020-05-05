@@ -1,0 +1,16 @@
+.sidenav {
+  width: 250px;
+  position: fixed;
+  padding-top: 90px;
+  height: 100%;
+  background-color: #fff; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+.sidenav .btn {
+  width: 130px;
+  border-radius: 15px;
+  margin-top: 0.8em;
+  margin-left: 0.8em;
+}

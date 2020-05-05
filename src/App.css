@@ -52,9 +52,32 @@ button {
 }
 
 .btn {
-  background-color: #605196 !important;
+  background-color: #0f75bd !important;
   font-family: "Cagliostro", sans-serif;
   color: #fff !important;
+}
+
+.app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.app .header {
+  z-index: 3;
+  width: 100%;
+  position: fixed;
+}
+
+.app .header-sidenav {
+  z-index: 2;
+  position: fixed;
+}
+
+#main {
+  transition: margin-top 0.5s;
+  padding-top: 90px;
+  z-index: 1;
 }
 
 .btn:focus,
