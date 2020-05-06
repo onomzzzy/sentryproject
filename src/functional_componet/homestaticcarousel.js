@@ -11,10 +11,17 @@ const HomeCarousel = () => {
           <div className="row">
             <div className="col-12">
               <div className="carousel-text">
-                <h2>
-                  With SentryGRC you now have a better way of managing your
-                  Governance, Risk and Compliance
-                </h2>
+                {webAppContext.webAppState.screenWidth > 640 ? (
+                  <h2>
+                    With SentryGRC you now have a better way of managing your
+                    Governance, Risk and Compliance
+                  </h2>
+                ) : (
+                  <h3>
+                    With SentryGRC you now have a better way of managing your
+                    Governance, Risk and Compliance
+                  </h3>
+                )}
                 <h6>
                   Instead of using folders, spreadsheets, calendar reminders,
                   etc.

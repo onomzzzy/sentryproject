@@ -86,7 +86,24 @@ const HomeContent = (props) => {
                           </div>
                           <div className="col-11">
                             <div className="feed-txt">
-                              <h4>“{props.writeUp}”</h4>
+                              {webAppContext.webAppState.screenWidth >= 470 ? (
+                                <div className="mlarge">
+                                  <h5>“{props.writeUp}”</h5>
+                                </div>
+                              ) : (
+                                <div>
+                                  {webAppContext.webAppState.screenWidth >=
+                                  419 ? (
+                                    <div className="mmid">
+                                      <h6>“{props.writeUp}”</h6>
+                                    </div>
+                                  ) : (
+                                    <div className="msmall">
+                                      <h6>“{props.writeUp}”</h6>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
