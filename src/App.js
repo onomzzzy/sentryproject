@@ -6,13 +6,18 @@ import Home from "./functional_componet/home";
 import Header from "./functional_componet/header";
 import Login from "./functional_componet/login";
 import SideNav from "./functional_componet/sidenav";
+import Modal from "./functional_componet/modal";
 
 export const WebAppContext = React.createContext();
+
+export const NavContext = React.createContext();
 
 function App() {
   //initial State
   const initialState = {
     screenWidth: window.innerWidth,
+    sideBar: false,
+    modal: false,
   };
 
   const reducer = (state, action) => {
@@ -21,6 +26,18 @@ function App() {
         state = {
           ...state,
           screenWidth: action.width,
+        };
+        return state;
+      case "TOGGLE_SIDE_BAR":
+        state = {
+          ...state,
+          sideBar: !state.sideBar,
+        };
+        return state;
+      case "TOGGLE_MODAL":
+        state = {
+          ...state,
+          modal: !state.modal,
         };
         return state;
       default:
@@ -51,12 +68,19 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <div className="header">
-          <Header size={state.screenWidth} />
-        </div>
-        <div className="header-sidenav">
-          <SideNav size={state.screenWidth} />
-        </div>
+        <NavContext.Provider value={{ navState: state, navDispatch: dispatch }}>
+          <div className="header">
+            <Header size={state.screenWidth} />
+          </div>
+
+          <div className="header-sidenav">
+            <SideNav size={state.screenWidth} />
+          </div>
+
+          <div className="app-modal">
+            <Modal />
+          </div>
+        </NavContext.Provider>
 
         <div id="main">
           <WebAppContext.Provider

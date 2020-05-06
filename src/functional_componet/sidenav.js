@@ -1,12 +1,13 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useContext } from "react";
 import "../css/sidenav.css";
 import { Link } from "react-router-dom";
 import MobileNav, { ColoredNav } from "./mobilenav";
+import { NavContext } from "../App";
 
 const SideNav = () => {
-  console.log(
-    `from Sidebar ${window.location.pathname.toString().replace("/", "")}`
-  );
+  const navContext = useContext(NavContext);
+  console.log(`from side ${navContext.navState.sideBar}`);
+
   const initialLink = {
     currentLink: window.location.pathname.toString().replace("/", ""),
     home: false,
@@ -14,7 +15,7 @@ const SideNav = () => {
     pricing: false,
     features: false,
     solutions: false,
-    navstate: 1,
+    navstate: navContext.navState.sideBar,
   };
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const SideNav = () => {
 
   return (
     <div>
-      {state.navstate > 0 ? (
+      {navContext.navState.sideBar && navContext.navState.screenWidth <= 991 ? (
         <div className="sidenav">
           <div>
             <Link
@@ -81,7 +82,12 @@ const SideNav = () => {
             </Link>
           </div>
           <div>
-            <button className="btn btn-sm">GET IN TOUCH</button>
+            <button
+              onClick={(e) => navContext.navDispatch({ type: "TOGGLE_MODAL" })}
+              className="btn btn-sm"
+            >
+              GET IN TOUCH
+            </button>
           </div>
         </div>
       ) : (

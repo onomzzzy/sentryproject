@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../css/homestaticcarousel.css";
+import { WebAppContext, NavContext } from "../App";
 
 const HomeCarousel = () => {
+  const webAppContext = useContext(WebAppContext);
   return (
     <div className="home-carousel">
       <div className="carousel-background">
@@ -27,9 +29,19 @@ const HomeCarousel = () => {
           <div className="container">
             <div className="row">
               <div className="col-12">
-                <h5>
-                  Manage your Governance, risk and compliance with SentryGRC
-                </h5>
+                {webAppContext.webAppState.screenWidth <= 991 ? (
+                  <div className="mobile">
+                    <h5>
+                      Manage your Governance, risk and compliance with SentryGRC
+                    </h5>
+                  </div>
+                ) : (
+                  <div className="desktop">
+                    <h5>
+                      Manage your Governance, risk and compliance with SentryGRC
+                    </h5>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../css/footer.css";
 import stock from "../icons/logo.png";
 import facebook from "../icons/facebookW.png";
 import instagram from "../icons/instagramW.png";
 import twitter from "../icons/twitterW.png";
 import email from "../icons/email.png";
+import { WebAppContext } from "../App";
 
 const Footer = () => {
+  const webAppContext = useContext(WebAppContext);
   return (
     <div className="footer">
       <div className="card">
@@ -42,7 +44,14 @@ const Footer = () => {
             </div>
             <div className="col">
               <div className="social push">
-                <button className="btn">Get in Touch</button>
+                <button
+                  onClick={(e) =>
+                    webAppContext.webAppDispatch({ type: "TOGGLE_MODAL" })
+                  }
+                  className="btn"
+                >
+                  Get in Touch
+                </button>
                 <h5>Follow Us</h5>
                 <div className="row">
                   <div className="col">

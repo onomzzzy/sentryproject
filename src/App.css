@@ -63,6 +63,11 @@ button {
   width: 100%;
 }
 
+.app .app-modal {
+  position: fixed; /* Stay in place */
+  z-index: 5;
+}
+
 .app .header {
   z-index: 3;
   width: 100%;

@@ -1,11 +1,14 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../css/header.css";
 import logo from "../icons/final-sentry.png";
 import HeaderLink, { HeaderLinkII } from "./headerLink";
 import { HamburgerArrow } from "react-animated-burgers";
+import { NavContext } from "../App";
 
 const Header = (props) => {
+  const navContext = useContext(NavContext);
+
   const initialLink = {
     currentLink: window.location.pathname.toString().replace("/", ""),
     home: false,
@@ -13,7 +16,7 @@ const Header = (props) => {
     pricing: false,
     features: false,
     solutions: false,
-    hamburger: false,
+    hamburger: navContext.navState.sideBar,
   };
 
   useEffect(() => {
@@ -65,7 +68,10 @@ const Header = (props) => {
                       className="hamburger"
                       barColor="#0f75bd"
                       isActive={state.hamburger}
-                      toggleButton={(e) => dispatch({ type: "HAMBURGER" })}
+                      toggleButton={(e) => {
+                        navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
+                        dispatch({ type: "HAMBURGER" });
+                      }}
                     />
                   </div>
                 </div>
@@ -111,7 +117,14 @@ const Header = (props) => {
                       </Link>
                     </div>
                     <div className="col">
-                      <button className="btn btn-sm">GET IN TOUCH</button>
+                      <button
+                        onClick={(e) =>
+                          navContext.navDispatch({ type: "TOGGLE_MODAL" })
+                        }
+                        className="btn btn-sm"
+                      >
+                        GET IN TOUCH
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -10,18 +10,29 @@
 
 .carousel-footer .card {
   background-color: #353e4e;
+  padding: 0 30px;
   height: 120px;
 }
 
-.carousel-footer h5 {
+.carousel-footer .mobile h5 {
+  margin: 8% 5%;
+  color: #fff;
+}
+
+.carousel-footer .desktop h5 {
+  margin: 4% 25%;
   color: #fff;
 }
 
 .carousel-text {
-  padding: 50px 200px;
+  margin: 8% auto;
+  padding: 0 40px;
 }
 
-.carousel-text h2,
-h6 {
+.carousel-text h2 {
+  color: #353e4e;
+}
+
+.carousel-text h6 {
   color: #353e4e;
 }
