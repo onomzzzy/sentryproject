@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../css/home.css";
 import pix from "../icons/proccessed3.jpg";
 import pix2 from "../icons/proccessed4.jpg";
@@ -9,22 +9,24 @@ import HomeCarousel from "./homestaticcarousel";
 import HomeContent from "./homecontent";
 import Footer from "./footer";
 import ScrollAnimation from "react-animate-on-scroll";
+import { WebAppContext } from "../App";
 
 const Home = () => {
+  const webAppContext = useContext(WebAppContext);
   return (
     <div>
       <div className="home">
         <div>
           <ScrollAnimation
-            animateIn="bounce"
-            initiallyVisible={true}
             animateOnce={true}
+            initiallyVisible={true}
+            animateIn="jello"
           >
             <HomeCarousel />
           </ScrollAnimation>
         </div>
         <div>
-          <ScrollAnimation animateIn="bounceInRight" animateOut="bounceOutLeft">
+          <ScrollAnimation initiallyVisible={true} animateIn="bounce">
             <HomeContent
               position="0"
               pixs={pix}
@@ -33,50 +35,129 @@ const Home = () => {
           </ScrollAnimation>
         </div>
         <div>
-          <ScrollAnimation animateIn="fadeIn" duration={5} animateOut="fadeOut">
-            <HomeContent
-              position="1"
-              pixs={pix2}
-              writeUp="Accessibility… wherever you are, you can track your progress"
-            />
-          </ScrollAnimation>
+          {webAppContext.webAppState.screenWidth <= 767 ? (
+            <div className="pull-up">
+              <ScrollAnimation animateIn="fadeInUp" duration={5}>
+                <HomeContent
+                  position="1"
+                  pixs={pix2}
+                  writeUp="Accessibility… wherever you are, you can track your progress"
+                />
+              </ScrollAnimation>
+            </div>
+          ) : (
+            <div>
+              {webAppContext.webAppState.screenWidth <= 767 ? (
+                <div className="pull-up">
+                  <ScrollAnimation animateIn="fadeInUp" duration={5}>
+                    <HomeContent
+                      position="1"
+                      pixs={pix2}
+                      writeUp="Accessibility… wherever you are, you can track your progress"
+                    />
+                  </ScrollAnimation>
+                </div>
+              ) : (
+                <div>
+                  <ScrollAnimation animateIn="fadeInUp" duration={5}>
+                    <HomeContent
+                      position="1"
+                      pixs={pix2}
+                      writeUp="Accessibility… wherever you are, you can track your progress"
+                    />
+                  </ScrollAnimation>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div>
-          <ScrollAnimation
-            duration={5}
-            animateIn="flipInY"
-            animateOut="flipOutY"
-          >
-            <HomeContent
-              position="0"
-              pixs={pix3}
-              writeUp="Integrity… single source of truth for all shared documents"
-            />
-          </ScrollAnimation>
+          {webAppContext.webAppState.screenWidth <= 767 ? (
+            <div className="pull-up">
+              <ScrollAnimation
+                duration={5}
+                initiallyVisible={true}
+                animateIn="tada"
+              >
+                <HomeContent
+                  position="0"
+                  pixs={pix3}
+                  writeUp="Integrity… single source of truth for all shared documents"
+                />
+              </ScrollAnimation>
+            </div>
+          ) : (
+            <div>
+              <ScrollAnimation
+                duration={5}
+                initiallyVisible={true}
+                animateIn="tada"
+              >
+                <HomeContent
+                  position="0"
+                  pixs={pix3}
+                  writeUp="Integrity… single source of truth for all shared documents"
+                />
+              </ScrollAnimation>
+            </div>
+          )}
         </div>
         <div>
-          <ScrollAnimation animateIn="wobble" initiallyVisible={true}>
-            <HomeContent
-              position="1"
-              pixs={pix4}
-              writeUp="Efficiency… doing more with our governance, risk and compliance"
-            />
-          </ScrollAnimation>
+          {webAppContext.webAppState.screenWidth <= 767 ? (
+            <div className="pull-up">
+              <ScrollAnimation animateIn="zoomIn" initiallyVisible={true}>
+                <HomeContent
+                  position="1"
+                  pixs={pix4}
+                  writeUp="Efficiency… doing more with our governance, risk and compliance"
+                />
+              </ScrollAnimation>
+            </div>
+          ) : (
+            <div>
+              <ScrollAnimation animateIn="zoomIn" initiallyVisible={true}>
+                <HomeContent
+                  position="1"
+                  pixs={pix4}
+                  writeUp="Efficiency… doing more with our governance, risk and compliance"
+                />
+              </ScrollAnimation>
+            </div>
+          )}
         </div>
+
         <div>
-          <ScrollAnimation
-            delay={1000}
-            animateIn="tada"
-            initiallyVisible={true}
-          >
-            <HomeContent
-              position="0"
-              pixs={pix5}
-              writeUp="Effectiveness… our organization is top notch"
-            />
-          </ScrollAnimation>
+          {webAppContext.webAppState.screenWidth <= 767 ? (
+            <div className="pull-up">
+              <ScrollAnimation
+                delay={1000}
+                animateIn="rubberBand"
+                initiallyVisible={true}
+              >
+                <HomeContent
+                  position="0"
+                  pixs={pix5}
+                  writeUp="Effectiveness… our organization is top notch"
+                />
+              </ScrollAnimation>
+            </div>
+          ) : (
+            <div>
+              <ScrollAnimation
+                delay={1000}
+                animateIn="rubberBand"
+                initiallyVisible={true}
+              >
+                <HomeContent
+                  position="0"
+                  pixs={pix5}
+                  writeUp="Effectiveness… our organization is top notch"
+                />
+              </ScrollAnimation>
+            </div>
+          )}
         </div>
-        >
+
         <div className="footer">
           <Footer />
         </div>

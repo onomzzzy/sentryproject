@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useContext } from "react";
+import React, { useContext } from "react";
 import "../css/sidenav.css";
 import { Link } from "react-router-dom";
 import MobileNav, { ColoredNav } from "./mobilenav";
@@ -6,41 +6,6 @@ import { NavContext } from "../App";
 
 const SideNav = () => {
   const navContext = useContext(NavContext);
-  console.log(`from side ${navContext.navState.sideBar}`);
-
-  const initialLink = {
-    currentLink: window.location.pathname.toString().replace("/", ""),
-    home: false,
-    login: false,
-    pricing: false,
-    features: false,
-    solutions: false,
-    navstate: navContext.navState.sideBar,
-  };
-
-  useEffect(() => {
-    dispatch({
-      type: "SET_LINK_STATE",
-      view: window.location.pathname.toString().replace("/", ""),
-    });
-  }, []);
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "SET_LINK_STATE":
-        state = {
-          ...state,
-          [state.currentLink]: false,
-          [action.view]: true,
-          currentLink: action.view,
-        };
-        return state;
-      default:
-        return initialLink;
-    }
-  };
-
-  const [state, dispatch] = useReducer(reducer, initialLink);
 
   return (
     <div>
@@ -49,41 +14,49 @@ const SideNav = () => {
           <div>
             <Link
               to="/home"
-              onClick={(e) =>
-                dispatch({
+              onClick={(e) => {
+                navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
+                navContext.navDispatch({
                   type: "SET_LINK_STATE",
                   view: "home",
-                })
-              }
+                });
+              }}
             >
-              <MobileNav view="HOME" active={state.home} />
+              <MobileNav view="HOME" active={navContext.navState.home} />
             </Link>
           </div>
           <div>
-            <MobileNav view="FEATURE" active={state.features} />
+            <MobileNav view="FEATURE" active={navContext.navState.features} />
           </div>
           <div>
-            <MobileNav view="SOLUTIONS" active={state.solutions} />
+            <MobileNav
+              view="SOLUTIONS"
+              active={navContext.navState.solutions}
+            />
           </div>
           <div>
-            <MobileNav view="PRICING" active={state.pricing} />
+            <MobileNav view="PRICING" active={navContext.navState.pricing} />
           </div>
           <div>
             <Link
               to="/login"
-              onClick={(e) =>
-                dispatch({
+              onClick={(e) => {
+                navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
+                navContext.navDispatch({
                   type: "SET_LINK_STATE",
                   view: "login",
-                })
-              }
+                });
+              }}
             >
-              <ColoredNav view="LOGIN" active={state.login} />
+              <ColoredNav view="LOGIN" active={navContext.navState.login} />
             </Link>
           </div>
           <div>
             <button
-              onClick={(e) => navContext.navDispatch({ type: "TOGGLE_MODAL" })}
+              onClick={(e) => {
+                navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
+                navContext.navDispatch({ type: "TOGGLE_MODAL" });
+              }}
               className="btn btn-sm"
             >
               GET IN TOUCH

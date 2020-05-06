@@ -13,7 +13,7 @@ a:hover {
 }
 
 .header .card .header-icon {
-  margin-top: 1em;
+  margin-top: 0.7em;
 }
 
 .header .card .header-icon img {
@@ -22,11 +22,11 @@ a:hover {
 
 .header .card .float-right {
   float: right;
-  margin-top: 2em;
+  margin-top: 1.7em;
 }
 
 .hamburg {
-  margin-top: -1em;
+  margin-top: -0.9em;
 }
 
 .hamburger {
@@ -42,5 +42,5 @@ a:hover {
 .header .float-right .btn {
   width: 130px;
   border-radius: 15px;
-  margin-top: -0.8em;
+  margin-top: -1.8em;
 }

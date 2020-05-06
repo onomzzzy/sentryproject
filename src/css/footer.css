@@ -1,5 +1,6 @@
 .footer {
   margin-top: 1em;
+  text-align: center;
 }
 .footer .card {
   background-color: #353e4e;
@@ -32,6 +33,9 @@
 
 .footer .social .row {
   margin-bottom: 0.6em;
+}
+.footer .social img {
+  width: 20px;
 }
 .footer .about h5,
 h6 {

@@ -6,48 +6,8 @@ import HeaderLink, { HeaderLinkII } from "./headerLink";
 import { HamburgerArrow } from "react-animated-burgers";
 import { NavContext } from "../App";
 
-const Header = (props) => {
+const Header = () => {
   const navContext = useContext(NavContext);
-
-  const initialLink = {
-    currentLink: window.location.pathname.toString().replace("/", ""),
-    home: false,
-    login: false,
-    pricing: false,
-    features: false,
-    solutions: false,
-    hamburger: navContext.navState.sideBar,
-  };
-
-  useEffect(() => {
-    dispatch({
-      type: "SET_LINK_STATE",
-      view: window.location.pathname.toString().replace("/", ""),
-    });
-  }, []);
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "SET_LINK_STATE":
-        state = {
-          ...state,
-          [state.currentLink]: false,
-          [action.view]: true,
-          currentLink: action.view,
-        };
-        return state;
-      case "HAMBURGER":
-        state = {
-          ...state,
-          hamburger: !state.hamburger,
-        };
-        return state;
-      default:
-        return initialLink;
-    }
-  };
-
-  const [state, dispatch] = useReducer(reducer, initialLink);
 
   return (
     <div className="header">
@@ -60,17 +20,16 @@ const Header = (props) => {
               </div>
             </div>
 
-            {props.size <= 991 ? (
+            {navContext.navState.screenWidth <= 991 ? (
               <div className="col-9">
                 <div className="float-right">
                   <div className="hamburg">
                     <HamburgerArrow
                       className="hamburger"
                       barColor="#0f75bd"
-                      isActive={state.hamburger}
+                      isActive={navContext.navState.sideBar}
                       toggleButton={(e) => {
                         navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
-                        dispatch({ type: "HAMBURGER" });
                       }}
                     />
                   </div>
@@ -84,36 +43,51 @@ const Header = (props) => {
                       <Link
                         id="home"
                         onClick={(e) =>
-                          dispatch({
+                          navContext.navDispatch({
                             type: "SET_LINK_STATE",
                             view: "home",
                           })
                         }
                         to="/home"
                       >
-                        <HeaderLink name="HOME" inView={state.home} />
+                        <HeaderLink
+                          name="HOME"
+                          inView={navContext.navState.home}
+                        />
                       </Link>
                     </div>
                     <div className="col">
-                      <HeaderLink name="FEATURES" inView={state.features} />
+                      <HeaderLink
+                        name="FEATURES"
+                        inView={navContext.navState.features}
+                      />
                     </div>
                     <div className="col">
-                      <HeaderLink name="SOLUTIONS" inView={state.solutions} />
+                      <HeaderLink
+                        name="SOLUTIONS"
+                        inView={navContext.navState.solutions}
+                      />
                     </div>
                     <div className="col">
-                      <HeaderLink name="PRICING" inView={state.pricing} />
+                      <HeaderLink
+                        name="PRICING"
+                        inView={navContext.navState.pricing}
+                      />
                     </div>
                     <div className="col">
                       <Link
                         onClick={(e) =>
-                          dispatch({
+                          navContext.navDispatch({
                             type: "SET_LINK_STATE",
                             view: "login",
                           })
                         }
                         to="/login"
                       >
-                        <HeaderLinkII name="LOGIN" inView={state.login} />
+                        <HeaderLinkII
+                          name="LOGIN"
+                          inView={navContext.navState.login}
+                        />
                       </Link>
                     </div>
                     <div className="col">

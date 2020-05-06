@@ -3,3 +3,7 @@
 .home .footer {
   margin-top: 1em;
 }
+
+.home .pull-up {
+  margin-top: -4em;
+}

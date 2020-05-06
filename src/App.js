@@ -18,6 +18,12 @@ function App() {
     screenWidth: window.innerWidth,
     sideBar: false,
     modal: false,
+    currentLink: window.location.pathname.toString().replace("/", ""),
+    home: false,
+    login: false,
+    pricing: false,
+    features: false,
+    solutions: false,
   };
 
   const reducer = (state, action) => {
@@ -34,6 +40,21 @@ function App() {
           sideBar: !state.sideBar,
         };
         return state;
+      case "SET_LINK_STATE":
+        state = {
+          ...state,
+          [state.currentLink]: false,
+          [action.view]: true,
+          currentLink: action.view,
+        };
+        return state;
+      case "SET_LINK_STATE_INITIAL":
+        state = {
+          ...state,
+          [action.view]: true,
+          currentLink: action.view,
+        };
+        return state;
       case "TOGGLE_MODAL":
         state = {
           ...state,
@@ -47,6 +68,13 @@ function App() {
 
   useEffect(() => {
     document.getElementById("loader").style.display = "none";
+  }, []);
+
+  useEffect(() => {
+    dispatch({
+      type: "SET_LINK_STATE_INITIAL",
+      view: window.location.pathname.toString().replace("/", ""),
+    });
   }, []);
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -70,11 +98,11 @@ function App() {
       <div className="app">
         <NavContext.Provider value={{ navState: state, navDispatch: dispatch }}>
           <div className="header">
-            <Header size={state.screenWidth} />
+            <Header />
           </div>
 
           <div className="header-sidenav">
-            <SideNav size={state.screenWidth} />
+            <SideNav />
           </div>
 
           <div className="app-modal">

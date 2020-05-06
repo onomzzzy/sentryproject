@@ -14,7 +14,7 @@ const Footer = () => {
       <div className="card">
         <div className="container">
           <div className="row">
-            <div className="col">
+            <div className="col-12 col-sm-6 col-md-3">
               <div className="stock-exchange push-stock">
                 <h3>SentryGRC</h3>
                 <div>
@@ -22,7 +22,7 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-            <div className="col">
+            <div className="col-12 col-sm-6 col-md-3">
               <div className="about push">
                 <h5>Learn About SentryGRC</h5>
                 <h6>What is SentryGRC</h6>
@@ -32,7 +32,7 @@ const Footer = () => {
                 <h6>Community</h6>
               </div>
             </div>
-            <div className="col">
+            <div className="col-12 col-sm-6  col-md-3">
               <div className="help push">
                 <h5>help</h5>
                 <h6>Contact Us</h6>
@@ -42,7 +42,7 @@ const Footer = () => {
                 <h6>Terms & Condition</h6>
               </div>
             </div>
-            <div className="col">
+            <div className="col-12 col-sm-6 col-md-3">
               <div className="social push">
                 <button
                   onClick={(e) =>
