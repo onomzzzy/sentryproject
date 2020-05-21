@@ -1,0 +1,9 @@
+.features-box{
+    border: 5px solid blue;
+    height: 150px;
+}
+.image-style{
+    max-width: 500px;
+    max-height: 400px;
+    /* width: 200px; */
+}

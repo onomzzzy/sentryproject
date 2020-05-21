@@ -7,6 +7,10 @@ import Header from "./functional_componet/header";
 import Login from "./functional_componet/login";
 import SideNav from "./functional_componet/sidenav";
 import Modal from "./functional_componet/modal";
+import Features from "./functional_componet/features";
+import Solutions from "./functional_componet/solutions";
+import Pricing from "./functional_componet/pricing";
+
 
 export const WebAppContext = React.createContext();
 
@@ -117,6 +121,10 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/home" component={Home} />
+              <Route path="/features" component={Features} />
+              <Route path="/solutions" component={Solutions} />
+              <Route path="/pricing" component={Pricing} />
+
               <Route path="/login" component={Login} />
               <Route path="**" component={ErrorPage} />
             </Switch>

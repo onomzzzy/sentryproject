@@ -26,16 +26,49 @@ const SideNav = () => {
             </Link>
           </div>
           <div>
+          <Link
+              to="/features"
+              onClick={(e) => {
+                navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
+                navContext.navDispatch({
+                  type: "SET_LINK_STATE",
+                  view: "features",
+                });
+              }}
+            >
             <MobileNav view="FEATURE" active={navContext.navState.features} />
+            </Link>
           </div>
           <div>
+          <Link
+              to="/solutions"
+              onClick={(e) => {
+                navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
+                navContext.navDispatch({
+                  type: "SET_LINK_STATE",
+                  view: "solutions",
+                });
+              }}
+            >
             <MobileNav
               view="SOLUTIONS"
               active={navContext.navState.solutions}
             />
+            </Link>
           </div>
           <div>
+          <Link
+              to="/pricing"
+              onClick={(e) => {
+                navContext.navDispatch({ type: "TOGGLE_SIDE_BAR" });
+                navContext.navDispatch({
+                  type: "SET_LINK_STATE",
+                  view: "pricing",
+                });
+              }}
+            >
             <MobileNav view="PRICING" active={navContext.navState.pricing} />
+            </Link>
           </div>
           <div>
             <Link

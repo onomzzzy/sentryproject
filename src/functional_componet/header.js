@@ -57,22 +57,52 @@ const Header = () => {
                       </Link>
                     </div>
                     <div className="col">
+                    <Link
+                        onClick={(e) =>
+                          navContext.navDispatch({
+                            type: "SET_LINK_STATE",
+                            view: "features",
+                          })
+                        }
+                        to="/features"
+                      >
                       <HeaderLink
                         name="FEATURES"
                         inView={navContext.navState.features}
                       />
+                      </Link>
                     </div>
                     <div className="col">
+                    <Link
+                        onClick={(e) =>
+                          navContext.navDispatch({
+                            type: "SET_LINK_STATE",
+                            view: "solutions",
+                          })
+                        }
+                        to="/solutions"
+                      >
                       <HeaderLink
                         name="SOLUTIONS"
                         inView={navContext.navState.solutions}
                       />
+                      </Link>
                     </div>
                     <div className="col">
+                    <Link
+                        onClick={(e) =>
+                          navContext.navDispatch({
+                            type: "SET_LINK_STATE",
+                            view: "pricing",
+                          })
+                        }
+                        to="/pricing"
+                      >
                       <HeaderLink
                         name="PRICING"
                         inView={navContext.navState.pricing}
                       />
+                      </Link>
                     </div>
                     <div className="col">
                       <Link

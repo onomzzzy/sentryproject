@@ -58,4 +58,43 @@ const HomeCarousel = () => {
   );
 };
 
+ export const HomeCarouselWithoutText = (props) => {
+  const webAppContext = useContext(WebAppContext);
+  return (
+    <div className="home-carousel">
+      <div className="carousel-background">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+  
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="carousel-footer">
+        <div className="card">
+          <div className="container">
+            <div className="row">
+              <div className="col-12">
+                {webAppContext.webAppState.screenWidth <= 991 ? (
+                  <div className="mobile">
+                    <h5>
+                      {props.innerText}
+                    </h5>
+                  </div>
+                ) : (
+                  <div className="desktop">
+                    <h5>
+                    {props.innerText}
+                    </h5>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 export default HomeCarousel;
